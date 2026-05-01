@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tech Term Challenge</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #ffffff;
+      color: #1a1a1a;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 680px;
+      width: 100%;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .header .label {
+      font-size: 13px;
+      color: #888;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .header h1 {
+      font-size: 30px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .clue-box {
+      background: #f5f5f5;
+      border-radius: 12px;
+      border: 1px solid #e0e0e0;
+      padding: 1.75rem 2rem;
+      margin-bottom: 2rem;
+      min-height: 100px;
+    }
+
+    .clue-box .clue-label {
+      font-size: 12px;
+      color: #aaa;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    #clue-text {
+      font-size: 18px;
+      color: #1a1a1a;
+      line-height: 1.7;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .input-row {
+      flex: 1;
+      min-width: 220px;
+      display: flex;
+      gap: 10px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      font-size: 16px;
+      height: 44px;
+      padding: 0 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus { border-color: #666; }
+    input[type="text"]:disabled { background: #f5f5f5; color: #aaa; }
+
+    button {
+      height: 44px;
+      padding: 0 20px;
+      font-size: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #fff;
+      color: #1a1a1a;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    button:hover { background: #f0f0f0; }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .tries-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+
+    .dots { display: flex; gap: 8px; }
+
+    .dot {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: #ddd;
+      transition: background 0.3s;
+    }
+
+    .dot.used { background: #e24b4a; }
+
+    #tries-label {
+      font-size: 15px;
+      color: #888;
+    }
+
+    .banner {
+      display: none;
+      border-radius: 12px;
+      padding: 1.5rem 2rem;
+      margin-bottom: 1.25rem;
+      text-align: center;
+      border: 1px solid;
+    }
+
+    .banner.success {
+      background: #f0faf0;
+      border-color: #a3d9a3;
+      color: #2a7a2a;
+    }
+
+    .banner.failure {
+      background: #fff0f0;
+      border-color: #f5b8b8;
+      color: #b00;
+    }
+
+    .banner .banner-title { font-size: 18px; font-weight: 500; }
+    .banner .banner-sub { font-size: 15px; margin-top: 6px; }
+
+    .answer-reveal {
+      display: none;
+      border-radius: 12px;
+      border: 1px solid #e0e0e0;
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+
+    .answer-reveal .reveal-header {
+      padding: 14px 2rem;
+      border-bottom: 1px solid #e0e0e0;
+      font-size: 12px;
+      color: #aaa;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .answer-reveal .reveal-body {
+      padding: 1.75rem 2rem;
+    }
+
+    #answer-word {
+      font-size: 34px;
+      font-weight: 500;
+      color: #1a1a1a;
+      margin-bottom: 10px;
+    }
+
+    #answer-desc {
+      font-size: 16px;
+      color: #555;
+      line-height: 1.7;
+    }
+
+    .all-clues-section {
+      padding: 1.25rem 2rem;
+      border-top: 1px solid #e0e0e0;
+      background: #f5f5f5;
+    }
+
+    .all-clues-label {
+      font-size: 12px;
+      color: #aaa;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .clue-row {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      font-size: 15px;
+      color: #555;
+      padding: 6px 0;
+      border-bottom: 1px solid #e0e0e0;
+      line-height: 1.6;
+    }
+
+    .clue-row .clue-num {
+      min-width: 22px;
+      font-weight: 500;
+      color: #aaa;
+    }
+
+    .hints-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .hint-row {
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 15px;
+      border: 1px solid;
+    }
+
+    .hint-row.wrong {
+      background: #fff0f0;
+      border-color: #f5b8b8;
+      color: #b00;
+    }
+
+    .hint-row.clue {
+      background: #f5f5f5;
+      border-color: #e0e0e0;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="label">tech term challenge</div>
+    <h1>what am i?</h1>
+  </div>
+
+  <div class="clue-box">
+    <div class="clue-label">clue</div>
+    <div id="clue-text">Press "New Game" to start a new round and get your first clue.</div>
+  </div>
+
+  <div class="controls">
+    <div class="input-row">
+      <input type="text" id="guess-input" placeholder="type your guess..." disabled />
+      <button id="submit-btn" onclick="submitGuess()" disabled>submit ↗</button>
+    </div>
+    <button onclick="startNewGame()">new game</button>
+  </div>
+
+  <div class="tries-row">
+    <div class="dots" id="tries-dots"></div>
+    <div id="tries-label">— / 10 tries</div>
+  </div>
+
+  <div class="banner" id="result-banner">
+    <div class="banner-title" id="banner-title"></div>
+    <div class="banner-sub" id="banner-sub"></div>
+  </div>
+
+  <div class="answer-reveal" id="answer-reveal">
+    <div class="reveal-header">the answer</div>
+    <div class="reveal-body">
+      <div id="answer-word"></div>
+      <div id="answer-desc"></div>
+    </div>
+    <div class="all-clues-section">
+      <div class="all-clues-label">all clues</div>
+      <div id="all-clues"></div>
+    </div>
+  </div>
+
+  <div class="hints-list" id="hints-list"></div>
+
+</div>
+
+<script>
+  const TERMS = [
+    {
+      word: "kernel",
+      description: "The kernel is the core of an operating system. It manages hardware resources — CPU, memory, I/O — and acts as the bridge between software applications and the physical hardware.",
+      clues: [
+        "I am the heart of an operating system, but you rarely interact with me directly.",
+        "I manage communication between hardware and software.",
+        "I control CPU scheduling and memory management.",
+        "Without me, your hardware and applications cannot talk to each other.",
+        "I am the first program loaded when your computer starts up.",
+        "Linux and Windows both have their own version of me.",
+        "I run in a privileged mode that user programs cannot access.",
+        "My name also refers to the seed inside a nut.",
+        "I handle input and output operations at the lowest level.",
+        "I am named after a word meaning 'core' or 'central part'."
+      ]
+    },
+    {
+      word: "cache",
+      description: "A cache is a fast, temporary storage layer that keeps copies of frequently accessed data. By serving data from a nearby fast store instead of the original slow source, it dramatically improves performance.",
+      clues: [
+        "I am a small, fast storage layer that sits between you and slower data.",
+        "My purpose is to speed things up by storing recently accessed data.",
+        "Browsers, CPUs, and servers all use a version of me.",
+        "When data is found in me, it is called a 'hit'. When it is not, a 'miss'.",
+        "I am much faster than RAM, and RAM is faster than a hard drive.",
+        "Clearing me can sometimes fix mysterious software bugs.",
+        "My name sounds like the word for physical money.",
+        "L1, L2, and L3 are different levels of me inside a processor.",
+        "Web developers often have to tell users to clear me in their browser.",
+        "I trade storage space for speed by keeping a temporary copy of data."
+      ]
+    },
+    {
+      word: "firewall",
+      description: "A firewall is a network security system that monitors and filters incoming and outgoing traffic based on predefined rules. It forms a protective barrier between trusted internal networks and untrusted external ones.",
+      clues: [
+        "I am a security system that monitors and controls network traffic.",
+        "I act as a barrier between a trusted network and untrusted ones.",
+        "I use rules to decide which connections to allow or block.",
+        "My name comes from a real-world barrier used to prevent fire from spreading.",
+        "I can be software, hardware, or a combination of both.",
+        "Without me, your computer would be exposed to the entire internet.",
+        "I can block specific ports, IP addresses, or protocols.",
+        "Hackers often try to find ways to bypass me.",
+        "Corporations use enterprise versions of me to protect their entire network.",
+        "Your home router likely has a basic version of me built in."
+      ]
+    },
+    {
+      word: "compiler",
+      description: "A compiler is a program that translates source code written in a high-level programming language into machine code or bytecode that a computer can execute. It processes the entire program before running it.",
+      clues: [
+        "I transform one language into another, usually a lower-level one.",
+        "Programmers use me before their code can run on a machine.",
+        "I turn human-readable source code into machine instructions.",
+        "I process the entire program at once, unlike my cousin the interpreter.",
+        "If your code has errors, I will refuse to produce output and list the problems.",
+        "GCC and Clang are well-known examples of me for the C language.",
+        "I can also optimize your code to run faster or use less memory.",
+        "My output is typically an executable file or object code.",
+        "Ada Lovelace and Grace Hopper were pioneers in my development.",
+        "My name comes from the Latin word meaning 'to gather together'."
+      ]
+    },
+    {
+      word: "daemon",
+      description: "A daemon is a background process that runs continuously on a computer without direct user interaction. It handles ongoing tasks like serving web pages, managing print jobs, or syncing files.",
+      clues: [
+        "I am a background process that runs silently without user interaction.",
+        "I start when the system boots and usually stop when it shuts down.",
+        "Web servers, print spoolers, and email services all use me.",
+        "I am the Unix/Linux equivalent of a Windows 'service'.",
+        "Users typically never see me, yet I handle critical system tasks.",
+        "My name is borrowed from Greek mythology, referring to a helpful spirit.",
+        "On Linux, I often have a letter 'd' at the end of my name, like 'sshd' or 'httpd'.",
+        "I listen for requests and respond to them automatically.",
+        "I run at a lower privilege level than the kernel.",
+        "You can manage me using tools like systemctl or init.d."
+      ]
+    },
+    {
+      word: "mutex",
+      description: "A mutex (mutual exclusion) is a synchronization lock used in concurrent programming. It ensures only one thread can access a shared resource at a time, preventing race conditions and data corruption.",
+      clues: [
+        "I am a synchronization primitive used in concurrent programming.",
+        "My job is to prevent multiple threads from accessing the same resource at once.",
+        "When a thread wants to use a resource, it must first lock me.",
+        "Only one thread can hold me at a time.",
+        "If another thread tries to lock me while I am held, it must wait.",
+        "Failing to release me causes a deadlock — a frozen program.",
+        "My name is short for two words meaning 'mutually exclusive'.",
+        "I am essential in multi-threaded applications to avoid race conditions.",
+        "Semaphores are a more generalized version of me.",
+        "Operating systems provide me as a low-level concurrency tool."
+      ]
+    },
+    {
+      word: "stack",
+      description: "A stack is a data structure that operates on a last-in, first-out (LIFO) basis. It is used everywhere in computing — from managing function calls in memory to tracking undo operations in apps.",
+      clues: [
+        "I am a fundamental data structure that follows a strict order.",
+        "The last item added to me is always the first one removed.",
+        "This principle is called LIFO — last in, first out.",
+        "Function calls are managed using a version of me inside memory.",
+        "My two main operations are called 'push' and 'pop'.",
+        "When you recurse too deeply, you can overflow me and crash your program.",
+        "Browsers use me to handle the 'back' button history.",
+        "I am also the name for a set of technologies used together, like a web stack.",
+        "Undo operations in software often rely on me internally.",
+        "My physical analogy is a pile of plates — you always take from the top."
+      ]
+    }
+  ];
+
+  let currentTerm = null;
+  let clueIndex = 0;
+  let guesses = 0;
+  let gameActive = false;
+  let usedIndices = [];
+
+  function startNewGame() {
+    let idx;
+    do { idx = Math.floor(Math.random() * TERMS.length); }
+    while (usedIndices.includes(idx) && usedIndices.length < TERMS.length);
+    if (usedIndices.length >= TERMS.length) usedIndices = [];
+    usedIndices.push(idx);
+
+    currentTerm = TERMS[idx];
+    clueIndex = 0;
+    guesses = 0;
+    gameActive = true;
+
+    document.getElementById('guess-input').value = '';
+    document.getElementById('guess-input').disabled = false;
+    document.getElementById('submit-btn').disabled = false;
+    document.getElementById('hints-list').innerHTML = '';
+    document.getElementById('result-banner').style.display = 'none';
+    document.getElementById('answer-reveal').style.display = 'none';
+    document.getElementById('clue-text').textContent = currentTerm.clues[0];
+
+    updateDots();
+    document.getElementById('guess-input').focus();
+  }
+
+  function updateDots() {
+    const container = document.getElementById('tries-dots');
+    container.innerHTML = '';
+    for (let i = 0; i < 10; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'dot' + (i < guesses ? ' used' : '');
+      container.appendChild(dot);
+    }
+    document.getElementById('tries-label').textContent = guesses + ' / 10 tries';
+  }
+
+  function showAnswerReveal() {
+    document.getElementById('answer-word').textContent = currentTerm.word;
+    document.getElementById('answer-desc').textContent = currentTerm.description;
+
+    const cluesContainer = document.getElementById('all-clues');
+    cluesContainer.innerHTML = '';
+    currentTerm.clues.forEach((clue, i) => {
+      const row = document.createElement('div');
+      row.className = 'clue-row';
+      row.innerHTML = '<span class="clue-num">' + (i + 1) + '</span><span>' + clue + '</span>';
+      cluesContainer.appendChild(row);
+    });
+
+    document.getElementById('answer-reveal').style.display = 'block';
+  }
+
+  function addHintRow(text, type) {
+    const el = document.createElement('div');
+    el.className = 'hint-row ' + type;
+    el.textContent = text;
+    const list = document.getElementById('hints-list');
+    list.insertBefore(el, list.firstChild);
+  }
+
+  function endGame(won) {
+    gameActive = false;
+    document.getElementById('guess-input').disabled = true;
+    document.getElementById('submit-btn').disabled = true;
+
+    const banner = document.getElementById('result-banner');
+    banner.style.display = 'block';
+
+    if (won) {
+      banner.className = 'banner success';
+      document.getElementById('banner-title').textContent = 'Correct! Well done.';
+      document.getElementById('banner-sub').textContent = 'Solved in ' + guesses + (guesses === 1 ? ' try' : ' tries');
+    } else {
+      banner.className = 'banner failure';
+      document.getElementById('banner-title').textContent = 'Out of tries! Better luck next round.';
+      document.getElementById('banner-sub').textContent = '';
+    }
+
+    showAnswerReveal();
+  }
+
+  function submitGuess() {
+    if (!gameActive) return;
+    const input = document.getElementById('guess-input');
+    const guess = input.value.trim().toLowerCase();
+    if (!guess) return;
+
+    input.value = '';
+    guesses++;
+    updateDots();
+
+    if (guess === currentTerm.word.toLowerCase()) {
+      endGame(true);
+      return;
+    }
+
+    addHintRow('"' + guess + '" — not quite.', 'wrong');
+
+    if (guesses >= 10) {
+      endGame(false);
+      return;
+    }
+
+    clueIndex++;
+    if (clueIndex < currentTerm.clues.length) {
+      const newClue = currentTerm.clues[clueIndex];
+      document.getElementById('clue-text').textContent = newClue;
+      addHintRow('Clue ' + (clueIndex + 1) + ': ' + newClue, 'clue');
+    }
+  }
+
+  document.getElementById('guess-input').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') submitGuess();
+  });
+</script>
+</body>
+</html>
