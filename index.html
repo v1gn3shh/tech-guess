@@ -6,333 +6,137 @@
   <title>Tech Guess</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg: #0e0e10;
-      --surface: #18181c;
-      --surface2: #22222a;
-      --border: #2e2e38;
-      --text: #f0f0f5;
-      --muted: #888899;
-      --accent: #7c6dfa;
-      --accent-glow: rgba(124,109,250,0.18);
-      --green: #4ade80;
-      --green-bg: rgba(74,222,128,0.08);
-      --red: #f87171;
-      --red-bg: rgba(248,113,113,0.08);
-      --yellow: #fbbf24;
-      --radius: 12px;
-      --radius-sm: 8px;
+      --bg: #0e0e10; --surface: #18181c; --surface2: #22222a; --border: #2e2e38;
+      --text: #f0f0f5; --muted: #888899; --accent: #7c6dfa; --accent-glow: rgba(124,109,250,0.18);
+      --green: #4ade80; --green-bg: rgba(74,222,128,0.08); --red: #f87171; --red-bg: rgba(248,113,113,0.08);
+      --yellow: #fbbf24; --radius: 12px; --radius-sm: 8px;
     }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      padding: 2rem 1rem 4rem;
-    }
-
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; justify-content: center; padding: 2rem 1rem 4rem; }
     .container { max-width: 600px; width: 100%; }
-
-    /* ── HEADER ── */
     .header { text-align: center; margin-bottom: 2.5rem; padding-top: 1rem; }
-    .logo {
-      font-size: 28px; font-weight: 700; letter-spacing: -0.5px;
-      background: linear-gradient(135deg, #7c6dfa, #a78bfa);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
+    .logo { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; background: linear-gradient(135deg, #7c6dfa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .tagline { font-size: 14px; color: var(--muted); margin-top: 4px; }
-
-    /* ── CARDS ── */
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.75rem;
-      margin-bottom: 1rem;
-    }
-
-    .card-label {
-      font-size: 11px; color: var(--muted);
-      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px;
-    }
-
-    /* ── INPUTS & BUTTONS ── */
-    input[type="text"], input[type="number"] {
-      width: 100%; font-size: 16px; height: 46px;
-      padding: 0 14px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      color: var(--text);
-      outline: none;
-      transition: border-color 0.2s;
-    }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; margin-bottom: 1rem; }
+    .card-label { font-size: 11px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; }
+    input[type="text"] { width: 100%; font-size: 16px; height: 46px; padding: 0 14px; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text); outline: none; transition: border-color 0.2s; }
     input:focus { border-color: var(--accent); }
     input:disabled { opacity: 0.4; cursor: not-allowed; }
     input::placeholder { color: var(--muted); }
-
-    button {
-      height: 46px; padding: 0 20px; font-size: 15px; font-weight: 500;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-      background: var(--surface2);
-      color: var(--text);
-      cursor: pointer;
-      transition: background 0.15s, border-color 0.15s, transform 0.1s;
-      white-space: nowrap;
-    }
+    button { height: 46px; padding: 0 20px; font-size: 15px; font-weight: 500; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface2); color: var(--text); cursor: pointer; transition: background 0.15s; white-space: nowrap; }
     button:hover:not(:disabled) { background: var(--border); }
-    button:active:not(:disabled) { transform: scale(0.98); }
     button:disabled { opacity: 0.35; cursor: not-allowed; }
-
-    .btn-primary {
-      background: var(--accent); border-color: var(--accent); color: #fff;
-    }
+    .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
     .btn-primary:hover:not(:disabled) { background: #6a5cf0; border-color: #6a5cf0; }
-
     .btn-full { width: 100%; }
-
-    /* ── DIFFICULTY SELECTOR ── */
     .diff-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    .diff-btn {
-      height: auto; padding: 14px 8px; flex-direction: column;
-      display: flex; align-items: center; gap: 4px;
-      font-size: 14px; font-weight: 500;
-    }
+    .diff-btn { height: auto; padding: 14px 8px; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 14px; font-weight: 500; }
     .diff-btn .diff-icon { font-size: 22px; }
     .diff-btn .diff-sub { font-size: 11px; color: var(--muted); font-weight: 400; }
     .diff-btn.selected { border-color: var(--accent); background: var(--accent-glow); color: var(--accent); }
-    .diff-btn.selected .diff-sub { color: var(--accent); opacity: 0.7; }
-
-    /* ── LOBBY ── */
     .screen { display: none; }
     .screen.active { display: block; }
-
-    .room-code-display {
-      font-size: 42px; font-weight: 700; letter-spacing: 8px;
-      text-align: center; color: var(--accent);
-      padding: 1.25rem; background: var(--accent-glow);
-      border-radius: var(--radius-sm); border: 1px solid var(--accent);
-      margin-bottom: 12px; cursor: pointer;
-    }
-    .room-code-display:hover::after { content: " (copied!)"; font-size: 14px; letter-spacing: 0; color: var(--muted); }
-
-    .players-list { display: flex; flex-direction: column; gap: 8px; }
-    .player-row {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 10px 14px; background: var(--surface2);
-      border-radius: var(--radius-sm); border: 1px solid var(--border);
-      font-size: 15px;
-    }
-    .player-row .badge {
-      font-size: 11px; padding: 3px 8px; border-radius: 20px;
-      background: var(--accent-glow); color: var(--accent);
-    }
-    .player-row .badge.host { background: rgba(251,191,36,0.12); color: var(--yellow); }
-
-    /* ── CLUE BOX ── */
-    .clue-box {
-      background: var(--surface2); border-radius: var(--radius);
-      border: 1px solid var(--border);
-      padding: 1.5rem 1.75rem; margin-bottom: 1.25rem; min-height: 90px;
-    }
+    .room-code-display { font-size: 42px; font-weight: 700; letter-spacing: 8px; text-align: center; color: var(--accent); padding: 1.25rem; background: var(--accent-glow); border-radius: var(--radius-sm); border: 1px solid var(--accent); margin-bottom: 12px; cursor: pointer; }
+    .player-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: var(--surface2); border-radius: var(--radius-sm); border: 1px solid var(--border); font-size: 15px; margin-bottom: 8px; }
+    .badge { font-size: 11px; padding: 3px 8px; border-radius: 20px; background: var(--accent-glow); color: var(--accent); }
+    .badge.host { background: rgba(251,191,36,0.12); color: var(--yellow); }
+    .clue-box { background: var(--surface2); border-radius: var(--radius); border: 1px solid var(--border); padding: 1.5rem 1.75rem; margin-bottom: 1.25rem; min-height: 90px; }
     #clue-text { font-size: 18px; line-height: 1.7; color: var(--text); }
-
-    /* ── TRIES ── */
-    .tries-row {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 1.5rem;
-    }
+    .tries-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
     .dots { display: flex; gap: 7px; }
-    .dot {
-      width: 12px; height: 12px; border-radius: 50%;
-      background: var(--border); transition: background 0.3s;
-    }
+    .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--border); transition: background 0.3s; }
     .dot.used { background: var(--red); }
-    #tries-label { font-size: 14px; color: var(--muted); }
-
-    /* ── GUESS ROW ── */
     .guess-row { display: flex; gap: 10px; margin-bottom: 10px; }
     .guess-row input { flex: 1; }
-
-    /* ── SCOREBOARD ── */
-    .score-row {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 10px 14px; border-radius: var(--radius-sm);
-      background: var(--surface2); border: 1px solid var(--border);
-      font-size: 15px; margin-bottom: 8px;
-    }
+    .score-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-radius: var(--radius-sm); background: var(--surface2); border: 1px solid var(--border); font-size: 15px; margin-bottom: 8px; }
     .score-row .pts { font-weight: 600; color: var(--accent); font-size: 17px; }
     .score-row.winner { border-color: var(--green); background: var(--green-bg); }
     .score-row.winner .pts { color: var(--green); }
-
-    /* ── BANNER ── */
-    .banner {
-      display: none; border-radius: var(--radius); padding: 1.25rem 1.75rem;
-      margin-bottom: 1rem; text-align: center; border: 1px solid;
-    }
+    .banner { display: none; border-radius: var(--radius); padding: 1.25rem 1.75rem; margin-bottom: 1rem; text-align: center; border: 1px solid; }
     .banner.success { background: var(--green-bg); border-color: rgba(74,222,128,0.3); color: var(--green); }
     .banner.failure { background: var(--red-bg); border-color: rgba(248,113,113,0.3); color: var(--red); }
-    .banner .b-title { font-size: 17px; font-weight: 600; }
-    .banner .b-sub { font-size: 14px; margin-top: 5px; opacity: 0.8; }
-
-    /* ── ANSWER REVEAL ── */
-    .answer-reveal {
-      display: none; border-radius: var(--radius);
-      border: 1px solid var(--border); overflow: hidden; margin-bottom: 1.25rem;
-    }
-    .reveal-header {
-      padding: 12px 1.75rem; border-bottom: 1px solid var(--border);
-      font-size: 11px; color: var(--muted);
-      letter-spacing: 0.1em; text-transform: uppercase;
-    }
+    .b-title { font-size: 17px; font-weight: 600; }
+    .b-sub { font-size: 14px; margin-top: 5px; opacity: 0.8; }
+    .answer-reveal { display: none; border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; margin-bottom: 1.25rem; }
+    .reveal-header { padding: 12px 1.75rem; border-bottom: 1px solid var(--border); font-size: 11px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
     .reveal-body { padding: 1.5rem 1.75rem; }
     #answer-word { font-size: 32px; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
     #answer-desc { font-size: 15px; color: var(--muted); line-height: 1.7; }
     .all-clues-section { padding: 1.25rem 1.75rem; border-top: 1px solid var(--border); background: var(--surface2); }
-    .clue-row {
-      display: flex; gap: 10px; font-size: 14px; color: var(--muted);
-      padding: 6px 0; border-bottom: 1px solid var(--border); line-height: 1.6;
-    }
+    .clue-row { display: flex; gap: 10px; font-size: 14px; color: var(--muted); padding: 6px 0; border-bottom: 1px solid var(--border); line-height: 1.6; }
     .clue-num { min-width: 20px; font-weight: 600; color: var(--accent); opacity: 0.6; }
-
-    /* ── HINTS LOG ── */
     .hints-list { display: flex; flex-direction: column; gap: 8px; }
-    .hint-row {
-      border-radius: var(--radius-sm); padding: 10px 14px;
-      font-size: 14px; border: 1px solid;
-    }
+    .hint-row { border-radius: var(--radius-sm); padding: 10px 14px; font-size: 14px; border: 1px solid; }
     .hint-row.wrong { background: var(--red-bg); border-color: rgba(248,113,113,0.25); color: var(--red); }
     .hint-row.clue { background: var(--surface2); border-color: var(--border); color: var(--muted); }
-
-    /* ── WAITING ── */
-    .waiting-msg {
-      text-align: center; padding: 2rem; color: var(--muted); font-size: 15px;
-    }
-    .spinner {
-      display: inline-block; width: 18px; height: 18px;
-      border: 2px solid var(--border); border-top-color: var(--accent);
-      border-radius: 50%; animation: spin 0.8s linear infinite;
-      vertical-align: middle; margin-right: 8px;
-    }
+    .waiting-msg { text-align: center; padding: 2rem; color: var(--muted); font-size: 15px; }
+    .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; vertical-align: middle; margin-right: 8px; }
     @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* ── STATUS BAR ── */
-    .status-bar {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 1.25rem; padding: 10px 14px;
-      background: var(--surface2); border-radius: var(--radius-sm);
-      border: 1px solid var(--border); font-size: 13px; color: var(--muted);
-    }
-    .status-bar .round-tag { color: var(--accent); font-weight: 600; font-size: 14px; }
-
-    /* ── MISC ── */
+    .status-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; padding: 10px 14px; background: var(--surface2); border-radius: var(--radius-sm); border: 1px solid var(--border); font-size: 13px; color: var(--muted); }
+    .round-tag { color: var(--accent); font-weight: 600; font-size: 14px; }
     .divider { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
-    .small-label { font-size: 13px; color: var(--muted); margin-bottom: 8px; display: block; }
     .error-msg { font-size: 13px; color: var(--red); margin-top: 6px; min-height: 18px; }
     .flex-row { display: flex; gap: 10px; }
     .mt-10 { margin-top: 10px; }
-    .mt-16 { margin-top: 16px; }
-
-    /* ── CONFIG NOTICE ── */
-    .config-notice {
-      background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.3);
-      border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1.5rem;
-      font-size: 14px; color: var(--yellow); line-height: 1.6;
-    }
-    .config-notice strong { display: block; margin-bottom: 4px; font-size: 15px; }
-    .config-notice code {
-      background: rgba(251,191,36,0.12); padding: 1px 6px;
-      border-radius: 4px; font-size: 13px; font-family: monospace;
-    }
   </style>
 </head>
 <body>
 <div class="container">
-
   <div class="header">
     <div class="logo">⚡ TechGuess</div>
     <div class="tagline">Multiplayer computer science guessing game</div>
   </div>
 
-  <!-- ══════════════ SETUP NOTICE ══════════════ -->
-  <div class="config-notice" id="setup-notice">
-    <strong>⚙️ Setup required before deploying</strong>
-    This game needs two free services. See the README for step-by-step instructions.<br><br>
-    1. <strong>Firebase</strong> — for real-time multiplayer rooms<br>
-    2. <strong>Anthropic API</strong> — for AI-generated clues<br><br>
-    Replace <code>FIREBASE_CONFIG</code> and <code>ANTHROPIC_API_KEY</code> in the <code>&lt;script&gt;</code> section at the bottom of this file.
-  </div>
-
-  <!-- ══════════════ SCREEN: HOME ══════════════ -->
+  <!-- HOME -->
   <div class="screen active" id="screen-home">
     <div class="card">
       <div class="card-label">your name</div>
       <input type="text" id="player-name" placeholder="enter your name..." maxlength="20"/>
       <div class="error-msg" id="name-error"></div>
     </div>
-
     <div class="card">
       <div class="card-label">difficulty</div>
-      <div class="diff-grid">
-        <button class="diff-btn selected" data-diff="beginner" onclick="selectDiff(this)">
-          <span class="diff-icon">🌱</span>
-          Beginner
-          <span class="diff-sub">Basic terms</span>
+      <div class="diff-grid" id="diff-grid">
+        <button class="diff-btn selected" data-diff="beginner">
+          <span class="diff-icon">🌱</span>Beginner<span class="diff-sub">Basic terms</span>
         </button>
-        <button class="diff-btn" data-diff="intermediate" onclick="selectDiff(this)">
-          <span class="diff-icon">⚡</span>
-          Intermediate
-          <span class="diff-sub">Core concepts</span>
+        <button class="diff-btn" data-diff="intermediate">
+          <span class="diff-icon">⚡</span>Intermediate<span class="diff-sub">Core concepts</span>
         </button>
-        <button class="diff-btn" data-diff="advanced" onclick="selectDiff(this)">
-          <span class="diff-icon">🔥</span>
-          Advanced
-          <span class="diff-sub">Deep knowledge</span>
+        <button class="diff-btn" data-diff="advanced">
+          <span class="diff-icon">🔥</span>Advanced<span class="diff-sub">Deep knowledge</span>
         </button>
       </div>
     </div>
-
     <div class="card">
-      <button class="btn-primary btn-full" onclick="createRoom()" id="btn-create">
-        Create Room
-      </button>
+      <button class="btn-primary btn-full" id="btn-create">Create Room</button>
       <hr class="divider"/>
       <div class="card-label">join existing room</div>
       <div class="flex-row">
         <input type="text" id="join-code" placeholder="enter room code..." maxlength="6" style="text-transform:uppercase;letter-spacing:3px;"/>
-        <button onclick="joinRoom()" id="btn-join">Join</button>
+        <button id="btn-join">Join</button>
       </div>
       <div class="error-msg" id="join-error"></div>
     </div>
   </div>
 
-  <!-- ══════════════ SCREEN: LOBBY ══════════════ -->
+  <!-- LOBBY -->
   <div class="screen" id="screen-lobby">
     <div class="card">
       <div class="card-label">room code — tap to copy</div>
-      <div class="room-code-display" id="lobby-code" onclick="copyCode()"></div>
+      <div class="room-code-display" id="lobby-code"></div>
       <div style="font-size:13px;color:var(--muted);text-align:center;">Share this code with friends to join</div>
     </div>
-
     <div class="card">
       <div class="card-label">players in room</div>
-      <div class="players-list" id="lobby-players"></div>
+      <div id="lobby-players"></div>
     </div>
-
-    <div class="card" id="lobby-diff-display">
+    <div class="card">
       <div class="card-label">difficulty</div>
       <div id="lobby-diff-text" style="font-size:16px;"></div>
     </div>
-
     <div id="host-controls">
-      <button class="btn-primary btn-full" onclick="startGame()" id="btn-start">
-        Start Game
-      </button>
+      <button class="btn-primary btn-full" id="btn-start">Start Game</button>
       <div style="font-size:13px;color:var(--muted);text-align:center;margin-top:8px;">You are the host</div>
     </div>
     <div id="guest-waiting" style="display:none;">
@@ -340,38 +144,30 @@
     </div>
   </div>
 
-  <!-- ══════════════ SCREEN: GAME ══════════════ -->
+  <!-- GAME -->
   <div class="screen" id="screen-game">
-
     <div class="status-bar">
       <span id="status-round" class="round-tag">Round 1</span>
-      <span id="status-diff" style="color:var(--muted);"></span>
-      <span id="status-players" style="color:var(--muted);"></span>
+      <span id="status-diff"></span>
+      <span id="status-players"></span>
     </div>
-
     <div class="clue-box">
       <div class="card-label">clue</div>
-      <div id="clue-text"><span class="spinner"></span> Generating clue...</div>
+      <div id="clue-text">Loading...</div>
     </div>
-
     <div class="tries-row">
       <div class="dots" id="tries-dots"></div>
       <div id="tries-label">0 / 10 tries</div>
     </div>
-
     <div class="guess-row">
       <input type="text" id="guess-input" placeholder="type your guess..." disabled/>
-      <button id="submit-btn" onclick="submitGuess()" disabled>submit ↗</button>
+      <button id="submit-btn" disabled>submit ↗</button>
     </div>
-    <button class="btn-full mt-10" onclick="startNewGame()" id="btn-new-round" style="display:none;">
-      Next Round ↻
-    </button>
-
+    <button class="btn-full mt-10" id="btn-new-round" style="display:none;">Next Round ↻</button>
     <div class="banner" id="result-banner">
       <div class="b-title" id="banner-title"></div>
       <div class="b-sub" id="banner-sub"></div>
     </div>
-
     <div class="answer-reveal" id="answer-reveal">
       <div class="reveal-header">the answer</div>
       <div class="reveal-body">
@@ -383,35 +179,23 @@
         <div id="all-clues"></div>
       </div>
     </div>
-
     <div id="scoreboard-wrap" style="display:none;">
       <div class="card">
         <div class="card-label">scoreboard</div>
         <div id="scoreboard"></div>
       </div>
     </div>
-
     <div class="hints-list" id="hints-list"></div>
   </div>
-
-  <!-- ══════════════ SCREEN: WAITING (non-host between rounds) ══════════════ -->
-  <div class="screen" id="screen-waiting">
-    <div class="waiting-msg" style="padding:4rem 0;">
-      <span class="spinner"></span>Waiting for next round...
-    </div>
-    <div class="card" id="waiting-scoreboard-wrap" style="display:none;">
-      <div class="card-label">current scores</div>
-      <div id="waiting-scoreboard"></div>
-    </div>
-  </div>
-
 </div>
 
-<script type="module">
-// ════════════════════════════════════════════════════════
-//  ⚙️  CONFIGURATION — replace these before deploying
-// ════════════════════════════════════════════════════════
-const FIREBASE_CONFIG = {
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script>
+// ══════════════════════════════════════════
+//  FIREBASE CONFIG
+// ══════════════════════════════════════════
+firebase.initializeApp({
   apiKey: "AIzaSyB-OYJtTexlE7wXthMz_K_Z2VlNIi8HT7o",
   authDomain: "tech-guess.firebaseapp.com",
   databaseURL: "https://tech-guess-default-rtdb.firebaseio.com",
@@ -419,459 +203,351 @@ const FIREBASE_CONFIG = {
   storageBucket: "tech-guess.firebasestorage.app",
   messagingSenderId: "4754251861",
   appId: "1:4754251861:web:a844522f4d159e176a34dc"
+});
+var db = firebase.database();
+
+// ══════════════════════════════════════════
+//  TERMS BANK — 15 per difficulty = 45 total
+// ══════════════════════════════════════════
+var TERMS = {
+  beginner: [
+    {word:"mouse",description:"A mouse is a handheld device you move on a surface to control the pointer on screen. Clicking its buttons lets you select and interact with items.",clues:["I sit on your desk and fit in your palm.","Moving me moves something on your screen.","I have buttons you can press.","I help you point at things on a display.","I connect to your computer by wire or wirelessly.","Without me, navigating a screen is much harder.","I have a scroll wheel in the middle.","I am named after a small furry animal.","Left-clicking selects things; right-clicking opens a menu.","I control the cursor on your screen."]},
+    {word:"keyboard",description:"A keyboard is an input device with rows of keys for letters, numbers, and symbols used to type and give commands to your computer.",clues:["I have dozens of individual buttons.","Each button represents a letter, number, or symbol.","You use me to write documents and send messages.","I am one of the most common ways to give a computer input.","I have a long bar at the bottom just for spaces.","I have special keys like Escape, Shift, and Enter.","Pressing my keys in sequence produces words.","I come in wired and wireless versions.","Gamers use colorful lit versions of me.","You type on me to communicate with your computer."]},
+    {word:"browser",description:"A browser is a program that lets you access and view websites. Chrome, Firefox, and Safari are all examples.",clues:["I am a program you open to visit websites.","I have an address bar where you type a web address.","I show you text, images, videos, and more.","I have a back button to return to the previous page.","I can save your favourite sites as bookmarks.","Multiple tabs let you have several sites open at once.","Chrome, Firefox, and Safari are examples of me.","I translate code from the internet into something visible.","I am the gateway to the World Wide Web.","You use me every time you go online."]},
+    {word:"password",description:"A password is a secret combination of characters used to verify your identity and protect access to your accounts.",clues:["I am something only you should know.","I protect your accounts from strangers.","I am often a mix of letters, numbers, and symbols.","Websites ask for me when you log in.","Making me long and random keeps you safer.","You should never share me with others.","Forgetting me can lock you out of your account.","A manager app can store many of me safely.","I work with a username to verify who you are.","I am the secret key to your digital accounts."]},
+    {word:"wifi",description:"WiFi is a technology that connects devices to the internet wirelessly using radio waves, without physical cables.",clues:["I let you go online without a cable.","I use invisible radio waves to carry data.","A router broadcasts me throughout your home.","You need a password to join a private version of me.","Cafes and airports often offer me for free.","My signal weakens the farther you are from the router.","Multiple devices can share me simultaneously.","I appear as curved fan-shaped lines as an icon.","Walls and interference can reduce my strength.","I give your devices wireless internet access."]},
+    {word:"folder",description:"A folder is a virtual container on a computer used to organise and store files, keeping related items grouped together.",clues:["I am a container that holds files on your computer.","I help keep your files organised and tidy.","You can put other versions of me inside me.","I am usually a yellow icon on most computers.","Double-clicking me reveals what is inside.","You can name me anything to describe my contents.","Documents, photos, and music can all live inside me.","I am the digital equivalent of a paper organiser.","Without me, finding files would be much harder.","I am a virtual container that organises your files."]},
+    {word:"cursor",description:"A cursor is the small movable indicator on screen showing where your next action will happen. It looks like an arrow or blinking line.",clues:["I am the small symbol that moves around your screen.","Moving the mouse moves me.","I show you where your next click will land.","When you hover over a link, I change shape.","While typing, I appear as a blinking vertical line.","I am controlled by your mouse or trackpad.","Clicking where I am selects or activates something.","I disappear when you stop moving the mouse.","I am the on-screen pointer that follows your hand.","I show you exactly where you are on the screen."]},
+    {word:"pixel",description:"A pixel is the smallest single point of colour on a digital display. Screens are made of millions of pixels that together form the images you see.",clues:["I am the tiniest unit of a digital image.","Millions of me together make up everything on screen.","Each one of me has a specific colour.","The more of me a screen has, the sharper the image.","Resolution is measured by how many of me fit on a screen.","Zooming in far on an image reveals me as tiny squares.","My name is short for 'picture element'.","Camera megapixels count millions of me.","I am like a single tile in a giant mosaic.","I am the smallest dot of colour on a screen."]},
+    {word:"screenshot",description:"A screenshot is an image of whatever is currently on your screen. It lets you save or share exactly what you are seeing.",clues:["I capture what is on your screen as an image.","You take me to save or share something you can see.","On phones, pressing two buttons at once creates me.","I am saved as an image file you can view later.","Tutorials use me to show steps visually.","I freeze a moment of your screen in time.","On Windows, the Print Screen key helps make me.","I am useful for reporting bugs or saving receipts.","You can send me to someone for help with a problem.","I am a picture of your screen."]},
+    {word:"upload",description:"Uploading means transferring a file from your device to the internet or another computer. Posting a photo online is an example.",clues:["I describe moving data from your device to somewhere else.","When you post a photo online, you do me.","I am the opposite of downloading.","After I finish, the file lives on a server, not just your device.","A progress bar often shows how far along I am.","Slow internet makes me take longer.","You do me when you attach a file to an email.","I send data from you up to a server.","Sharing a video on social media involves me.","I transfer a file from your device to the internet."]},
+    {word:"download",description:"Downloading means transferring a file from the internet or another computer to your own device. Installing an app is a common example.",clues:["I describe moving data from somewhere else to your device.","When you save a photo from the internet, you do me.","I am the opposite of uploading.","After I finish, the file lives on your device.","A progress bar often shows how far along I am.","Slow internet makes me take longer.","You do me when you install an app.","Files, music, and videos can all be acquired through me.","I move data from a server down to you.","I save something from the web onto your computer."]},
+    {word:"icon",description:"An icon is a small graphic image on a screen that represents a program, file, or function. You click or tap it to open or use what it represents.",clues:["I am a small picture on your screen.","Tapping or clicking me opens something.","Apps on your phone are represented by me.","I make it easier to find programs without typing commands.","I can represent a file, folder, or application.","I sit on your desktop or home screen.","Designers spend a lot of time making me look good.","I am a visual shortcut to something on your device.","Dragging me to the bin deletes what I represent.","I am the small graphic you tap to open an app."]},
+    {word:"notification",description:"A notification is an alert sent by an app or system to inform you of new activity, messages, or updates, even when you are not actively using it.",clues:["I pop up to get your attention.","Apps send me when something new happens.","I can appear as a banner, badge, or sound.","You can turn me off in settings if I become annoying.","Messages, emails, and reminders all trigger me.","I appear even when you are not actively using an app.","A red number on an app icon is a type of me.","I keep you informed without you having to check manually.","Too many of me can be distracting.","I am an alert telling you something new has happened."]},
+    {word:"touchscreen",description:"A touchscreen is a display that detects your finger or stylus touching it, letting you interact directly with what is on screen.",clues:["I respond to your finger touching the display.","Smartphones and tablets use me as their main input.","I replaced physical buttons on many modern devices.","Swiping, tapping, and pinching are all ways to use me.","A stylus can also interact with me.","I let you interact directly with what you see.","ATMs and self-checkout machines often use me.","Tapping twice quickly zooms in on many devices with me.","I detect the heat and pressure of your fingertip.","I am the display that you control by touching."]},
+    {word:"charger",description:"A charger is a device that replenishes the battery of an electronic device by converting mains power into the correct voltage for the device.",clues:["Without me, your device eventually dies.","I plug into a wall socket on one end.","I connect to your phone or laptop on the other end.","I convert electricity from the wall into power your device can use.","Leaving me plugged in overnight tops up your battery.","Different devices often need different versions of me.","USB-C, Lightning, and MicroUSB are types of connector I use.","Losing me can leave you stranded with a dead phone.","Wireless versions of me now exist that need no cable.","I refill your device's battery with power."]}
+  ],
+  intermediate: [
+    {word:"cache",description:"A cache is fast temporary storage that holds copies of frequently accessed data nearby to speed up retrieval.",clues:["I am a hidden layer of fast temporary storage.","I hold copies of data so it can be found faster next time.","Browsers, CPUs, and servers all use a version of me.","A hit means data was found in me; a miss means it was not.","I am much faster than regular storage.","Clearing me can sometimes fix strange software bugs.","My name sounds like the word for physical money.","L1, L2, and L3 are levels of me inside a CPU.","I trade storage space for speed.","I keep a temporary copy of data to avoid fetching it again."]},
+    {word:"API",description:"An API is a set of rules allowing different software programs to communicate with each other, defining how requests and responses are structured.",clues:["I am a contract between two pieces of software.","I define how programs can talk to each other.","Developers use me to access features of another service.","Weather apps use me to fetch data from a weather service.","I hide complexity behind a simple interface.","REST and GraphQL are two common styles of me.","Logging in with Google on another site uses me.","I am like a waiter taking your order to the kitchen.","My name stands for Application Programming Interface.","I allow two different software systems to communicate."]},
+    {word:"encryption",description:"Encryption converts data into a coded format that only someone with the correct key can read, protecting sensitive information.",clues:["I scramble data so only authorised parties can read it.","Without the right key, my output looks like random gibberish.","I protect your messages, passwords, and financial data.","HTTPS uses me to secure web traffic.","I have been used since ancient times for secret messages.","Caesar's cipher is one of the simplest forms of me.","Symmetric and asymmetric are two types of me.","End-to-end means even the service provider cannot undo me.","My name comes from a Greek word meaning hidden.","I convert readable data into an unreadable coded format."]},
+    {word:"algorithm",description:"An algorithm is a precise step-by-step set of instructions for solving a problem. Every computer program is built on algorithms.",clues:["I am a step-by-step recipe for solving a problem.","Computers follow me to complete tasks.","Sorting a list or finding the shortest path are examples of me.","I must have a clear start, defined steps, and an end.","My efficiency is measured in time and space complexity.","Big O notation describes my performance.","Search engines use complex versions of me.","I can be expressed in plain language, flowcharts, or code.","I was named after a 9th-century Persian mathematician.","I am a defined sequence of steps to solve a problem."]},
+    {word:"recursion",description:"Recursion is a technique where a function calls itself to solve a smaller version of the same problem, continuing until a base case stops it.",clues:["I occur when something refers to or calls itself.","A function can use me to call itself.","I need a base case, otherwise I run forever.","Fractals in nature are a visual example of me.","Calculating factorial is a classic code example of me.","Going too deep with me causes a stack overflow.","Russian nesting dolls are a physical metaphor for me.","I break a big problem into smaller identical sub-problems.","My definition contains itself.","I am when a function solves a problem by calling itself."]},
+    {word:"firewall",description:"A firewall monitors and filters network traffic based on predefined rules, acting as a security barrier between trusted and untrusted networks.",clues:["I am a security barrier between networks.","I inspect traffic and decide what to allow or block.","I use rules based on ports, protocols, and IP addresses.","My name comes from a physical wall that stops fire from spreading.","I can be software, hardware, or both.","Without me, your computer is exposed to the entire internet.","Hackers try to find holes in me.","Enterprises use advanced versions of me to protect networks.","Your home router has a basic version of me built in.","I filter network traffic to keep unwanted connections out."]},
+    {word:"bandwidth",description:"Bandwidth is the maximum data that can be transmitted over a network connection in a given time. Higher bandwidth means faster internet.",clues:["I measure how much data a connection can carry.","Higher amounts of me mean faster internet.","I am measured in megabits per second.","Streaming 4K video requires a lot of me.","I am like the width of a pipe — wider means more flow.","Sharing a connection splits me among users.","I differ from latency, which measures delay not capacity.","Internet plans are sold based on how much of me you get.","Congestion happens when demand exceeds available me.","I describe the data capacity of a network connection."]},
+    {word:"kernel",description:"The kernel is the core of an operating system that manages hardware resources and acts as a bridge between applications and physical hardware.",clues:["I am the core of an operating system.","I manage the CPU, memory, and hardware devices.","Applications cannot touch hardware without going through me.","I am the first part of the OS loaded at startup.","Linux, Windows, and macOS all have their own version of me.","I run in a privileged mode normal programs cannot access.","Monolithic and microkernel are two architectural styles of me.","I handle process scheduling and memory allocation.","My name also refers to the seed at the centre of a nut.","I am the innermost layer of an operating system."]},
+    {word:"compiler",description:"A compiler translates source code in a high-level language into machine code a computer can execute, processing the entire program before running it.",clues:["I translate human-readable code into machine instructions.","I process the entire program before any of it runs.","If your code has errors, I list them and refuse to continue.","I differ from an interpreter, which runs code line by line.","GCC and Clang are well-known examples of me for C.","I can optimise code to run faster or use less memory.","My output is usually an executable binary file.","Grace Hopper created one of the first versions of me.","Without me, high-level code cannot run on hardware.","I convert source code into a runnable program."]},
+    {word:"DNS",description:"DNS translates human-friendly domain names like google.com into numerical IP addresses that computers use to locate each other.",clues:["I translate website names into numbers computers understand.","Without me, you would memorise strings of numbers to visit sites.","I work silently every time you open a website.","My name stands for Domain Name System.","I am like the phone book of the internet.","Changing me can make a website unreachable.","Your internet provider gives you a default version of me.","8.8.8.8 is Google's public version of me.","A, CNAME, and MX are types of entries in my database.","I convert domain names into IP addresses."]},
+    {word:"RAM",description:"RAM (Random Access Memory) is fast, temporary memory your computer uses to store data it is actively working with. It is wiped when the power is off.",clues:["I am the working memory of your computer.","Programs and files you have open live in me temporarily.","I am much faster than a hard drive or SSD.","When you shut down, everything in me disappears.","Adding more of me generally makes a computer feel faster.","I am measured in gigabytes.","My name stands for Random Access Memory.","Too little of me causes slowdowns and crashes.","I am different from storage — I only hold active data.","I am your computer's short-term memory."]},
+    {word:"IP address",description:"An IP address is a unique numerical label assigned to every device on a network. It allows devices to locate and communicate with each other.",clues:["I am a unique number given to every device on a network.","I allow devices to find and communicate with each other.","Without me, data would not know where to go.","I come in two versions: version 4 and version 6.","A version 4 example looks like 192.168.1.1.","Websites have me assigned to them as well.","Your router assigns a local version of me to your devices.","My name stands for Internet Protocol address.","VPNs can mask or change mine.","I am the numerical address that identifies a device online."]},
+    {word:"bug",description:"A bug is an error or flaw in a program that causes it to produce incorrect or unexpected results. The term was popularised after a moth was found in a computer.",clues:["I am an error in a piece of software.","I cause programs to behave unexpectedly or crash.","Programmers spend a lot of time hunting for me.","The process of removing me is called debugging.","I can range from a minor glitch to a critical system failure.","I was popularised after a real insect was found in a computer in 1947.","A typo in code is one common cause of me.","Some of me are so serious they create security vulnerabilities.","Unit tests are written to catch me early.","I am an unintended flaw in a program."]},
+    {word:"loop",description:"A loop is a programming construct that repeats a set of instructions until a specified condition is met. It is fundamental to automating repetitive tasks.",clues:["I repeat a set of instructions multiple times.","I keep running until a condition tells me to stop.","Without a stop condition, I run forever — called an infinite version of me.","For, while, and do-while are common types of me.","I am essential for processing lists of data.","Printing numbers from 1 to 100 is a classic use of me.","I save programmers from writing the same code over and over.","Each repetition of me is called an iteration.","I am a fundamental building block in almost every program.","I repeat code until a condition is met."]},
+    {word:"variable",description:"A variable is a named storage location in a program that holds a value which can change during execution. It is one of the most fundamental concepts in programming.",clues:["I am a named container for storing data in a program.","My value can change as the program runs.","Programmers give me a meaningful name to describe what I hold.","x, count, and username are examples of my names.","I can hold numbers, text, or other data types.","Declaring me tells the program I exist and what type I am.","Without me, programs could not remember anything.","I am like a labelled box that holds a piece of information.","When you sign in, your username is stored in a version of me.","I am a named storage location that holds a value in code."]}
+  ],
+  advanced: [
+    {word:"mutex",description:"A mutex ensures only one thread can access a shared resource at a time. Failing to release it causes a deadlock.",clues:["I am a synchronisation primitive in concurrent programming.","Only one thread can hold me at a time.","Acquiring me blocks all other threads that try to do the same.","Failing to release me causes the program to freeze forever.","I prevent race conditions on shared data.","My name is short for mutual exclusion.","Binary semaphores are closely related to me.","I am the bouncer at the door of a shared resource.","Spinlocks are a busy-waiting alternative to me.","I ensure exclusive access to a shared resource."]},
+    {word:"deadlock",description:"A deadlock occurs when two or more processes each wait for the other to release a resource, causing all of them to halt indefinitely.",clues:["I am a frozen standstill in a multi-process system.","Two or more processes each hold what the other needs.","None of the involved processes can ever continue.","Coffman identified four necessary conditions for me.","Mutual exclusion, hold-and-wait, no preemption, and circular wait define me.","Database systems use timeouts to detect me.","I am like two cars on a narrow road, neither willing to reverse.","Careful lock ordering prevents me.","The dining philosophers problem is a classic illustration of me.","I occur when processes permanently block each other waiting for resources."]},
+    {word:"memoization",description:"Memoization caches the results of expensive function calls so repeated calls with the same inputs return instantly without repeating the work.",clues:["I am an optimisation technique for expensive computations.","I store the result of a function call to avoid repeating the work.","Calling a function twice with the same input only does real work once.","I trade memory for speed.","Dynamic programming uses me as its core mechanism.","Fibonacci without me is exponentially slow; with me it is linear.","I am a specific form of caching applied to function results.","Pure functions with no side effects are best candidates for me.","Top-down dynamic programming is recursion plus me.","I cache function results to avoid redundant computation."]},
+    {word:"sharding",description:"Sharding splits a database across multiple servers each holding a subset called a shard, letting the system scale beyond what a single machine can handle.",clues:["I am a horizontal scaling strategy for databases.","I split data across multiple machines, each holding a piece.","Each piece of data lives on exactly one of my partitions.","I let a database grow beyond what one server can hold.","Choosing the wrong partition key causes uneven data distribution.","MongoDB and Cassandra support me natively.","Resharding when data grows unevenly is a major operational challenge.","My name refers to a fragment of something.","Consistent hashing is used to implement me.","I partition a large dataset across many nodes."]},
+    {word:"semaphore",description:"A semaphore uses an atomic counter to control access to shared resources by multiple threads. A counting semaphore can allow more than one accessor at a time.",clues:["I am a synchronisation tool used in operating systems.","I use an integer counter to control access to resources.","My counter is decremented and incremented atomically.","A binary version of me behaves like a mutex.","A counting version lets N threads in simultaneously.","Dijkstra invented me and called my operations P and V.","I control access to a pool of resources.","Semaphore flags on ships are my real-world namesake.","Producer-consumer problems are classically solved with me.","I coordinate concurrent access using an atomic counter."]},
+    {word:"race condition",description:"A race condition is a bug where program behaviour depends on the timing of thread execution, making outcomes unpredictable when threads share mutable data.",clues:["I am a class of bug in concurrent programs.","I occur when two threads access shared data at the same time.","My outcome depends on the exact timing of thread execution.","I am difficult to reproduce because timing varies between runs.","Adding a print statement can make me temporarily disappear.","Mutexes and locks are used to prevent me.","I can corrupt data, crash programs, or create security holes.","I am named after a race between competing processes.","Thread sanitisers are tools used to detect me.","I happen when unsynchronised threads share mutable state."]},
+    {word:"garbage collection",description:"Garbage collection automatically reclaims memory occupied by objects no longer referenced by the program, preventing leaks without manual deallocation.",clues:["I am an automatic process that reclaims unused memory.","Without me, long-running programs eventually run out of memory.","I find objects no longer reachable by any part of the program.","Java, Python, and Go include me by default.","C and C++ do not have me — developers manage memory manually.","Mark-and-sweep is one algorithm used to implement me.","I can cause brief pauses in program execution.","Reference counting is an alternative approach to me.","Generational variants separate short-lived and long-lived objects.","I automatically frees memory that is no longer needed."]},
+    {word:"bloom filter",description:"A bloom filter is a space-efficient probabilistic structure that tests set membership. It never gives false negatives but can produce false positives.",clues:["I am a probabilistic data structure for testing membership.","I can confirm something is definitely not in a set.","I never give a false negative, but I can give a false positive.","I use multiple hash functions and a bit array.","I use far less memory than storing all elements directly.","Databases use me to avoid unnecessary disk lookups.","Adding elements to me is irreversible — deletion is not supported.","My error rate increases as more elements are inserted.","I was invented by Burton Howard Bloom in 1970.","I efficiently test whether an element might be in a set."]},
+    {word:"B-tree",description:"A B-tree is a self-balancing tree that keeps data sorted and supports search, insertion, and deletion in logarithmic time. It underpins most database indexes.",clues:["I am a self-balancing tree data structure.","I keep data sorted and allow efficient search, insert, and delete.","My operations run in O(log n) time.","I generalise a binary search tree to allow more children per node.","I am optimised for systems that read and write large data blocks.","PostgreSQL and MySQL use me for indexing.","File systems use me to organise stored data.","My height stays small even with millions of entries.","Every leaf in me is at the same depth.","I am the primary data structure behind most database indexes."]},
+    {word:"load balancer",description:"A load balancer distributes incoming network traffic across multiple servers so no single server is overwhelmed, improving reliability and performance.",clues:["I distribute work evenly across multiple servers.","Without me, one server could become overwhelmed while others sit idle.","I sit between users and the servers that handle their requests.","Round-robin and least-connections are strategies I can use.","I improve both the speed and reliability of a system.","If one server goes down, I route traffic to the remaining ones.","Cloud providers offer managed versions of me.","I am essential for any website that needs to scale.","I can also perform health checks on the servers I manage.","I spread traffic across servers to prevent any single point of failure."]},
+    {word:"containerisation",description:"Containerisation packages an application and all its dependencies into an isolated container that runs consistently across different environments.",clues:["I bundle an app and everything it needs to run together.","I ensure the app behaves the same on any machine.","Docker is the most well-known tool that implements me.","I am lighter than a virtual machine because I share the host OS.","Kubernetes is used to orchestrate many instances of me.","Developers love me because it eliminates the works on my machine problem.","Each unit of me is isolated from others on the same host.","Microservices architectures rely heavily on me.","I use Linux namespaces and cgroups under the hood.","I package software and its dependencies into a portable isolated unit."]},
+    {word:"hashing",description:"Hashing converts input data of any size into a fixed-size output called a hash. It is used for data integrity checks, password storage, and data structures.",clues:["I convert any input into a fixed-length output.","The same input always produces the same output from me.","A tiny change in input produces a completely different output from me.","I am a one-way process — you cannot reverse me to get the original.","Passwords are stored using me rather than in plain text.","SHA-256 and MD5 are well-known algorithms that perform me.","Hash tables use me to map keys to storage locations.","I am used to verify that a downloaded file has not been tampered with.","Blockchain uses me extensively to link blocks together.","I transform data into a fixed-size fingerprint."]},
+    {word:"virtual machine",description:"A virtual machine is a software emulation of a physical computer that runs an operating system and applications in an isolated environment.",clues:["I am a computer that exists entirely in software.","I run on top of a physical machine called a host.","I have my own operating system, memory, and storage — all virtual.","Multiple versions of me can run on one physical machine.","I am used to test software in isolated environments.","If I crash, the host machine is unaffected.","VMware and VirtualBox are tools for creating me.","Cloud providers rent out versions of me to customers.","I am slower than running directly on hardware.","I emulate a complete computer in software."]},
+    {word:"latency",description:"Latency is the time delay between sending a request and receiving the first response. Lower latency means a system feels faster and more responsive.",clues:["I am the delay between a request being sent and a response arriving.","Lower amounts of me make systems feel faster and more responsive.","I am measured in milliseconds.","Gamers complain about me as ping.","I differ from bandwidth — I measure delay, not capacity.","Physical distance between a user and a server increases me.","Fibre optic cables reduce me compared with older copper cables.","Edge computing places servers closer to users to reduce me.","Even the speed of light sets a minimum for me.","I measure how long it takes for data to travel from source to destination."]},
+    {word:"SOLID principles",description:"SOLID is a set of five object-oriented design principles that help developers write code that is easier to maintain, extend, and understand.",clues:["I am a famous set of five principles for writing clean code.","I was popularised by Robert C. Martin, also known as Uncle Bob.","I apply specifically to object-oriented programming.","Each letter in my name stands for one of the five principles.","S stands for single responsibility — a class should do one thing.","O stands for open-closed — open for extension, closed for modification.","L stands for Liskov substitution — subtypes must be replaceable.","I stands for interface segregation — no client should depend on unused methods.","D stands for dependency inversion — depend on abstractions, not concretions.","I am five guiding principles for clean object-oriented design."]}
+  ]
 };
 
-const ANTHROPIC_API_KEY = "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";
-
-// ════════════════════════════════════════════════════════
-//  FIREBASE INIT
-// ════════════════════════════════════════════════════════
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, set, get, update, onValue, off, push, serverTimestamp }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
-const app = initializeApp(FIREBASE_CONFIG);
-const db  = getDatabase(app);
-
-// ════════════════════════════════════════════════════════
+// ══════════════════════════════════════════
 //  STATE
-// ════════════════════════════════════════════════════════
-let myName       = "";
-let myId         = crypto.randomUUID().slice(0, 8);
-let roomCode     = "";
-let isHost       = false;
-let difficulty   = "beginner";
-let gameActive   = false;
-let guesses      = 0;
-let clueIndex    = 0;
-let currentClues = [];
-let currentWord  = "";
-let currentDesc  = "";
-let roundRef     = null;
-let roomRef      = null;
-let myScore      = 0;
-let roundScores  = {};
-let listeners    = [];
+// ══════════════════════════════════════════
+var myName="", myId="", roomCode="", isHost=false, difficulty="beginner";
+var gameActive=false, guesses=0, clueIndex=0;
+var currentClues=[], currentWord="", currentDesc="";
+var myScore=0, roomListener=null, usedTerms={beginner:[],intermediate:[],advanced:[]};
 
-// ════════════════════════════════════════════════════════
-//  DIFFICULTY CONFIG
-// ════════════════════════════════════════════════════════
-const DIFF_PROMPTS = {
-  beginner: `You are a clue generator for a tech guessing game aimed at beginners (high school level).
-Pick ONE simple computer science term a beginner would know (e.g. mouse, keyboard, browser, folder, wifi, password, cursor, download, upload, website, byte, pixel, icon).
-Generate exactly 10 clues that progressively get more obvious. Start very abstract, end nearly obvious.
-Respond ONLY with valid JSON in this exact format, nothing else:
-{"word":"<the term>","description":"<2 sentence plain-English explanation>","clues":["clue1","clue2","clue3","clue4","clue5","clue6","clue7","clue8","clue9","clue10"]}`,
+function genId(){ return Math.random().toString(36).slice(2,10); }
+function genCode(){
+  var c="ABCDEFGHJKLMNPQRSTUVWXYZ23456789", r="";
+  for(var i=0;i<5;i++) r+=c[Math.floor(Math.random()*c.length)];
+  return r;
+}
 
-  intermediate: `You are a clue generator for a tech guessing game at intermediate level (undergrad CS student).
-Pick ONE intermediate computer science term (e.g. cache, API, kernel, compiler, recursion, bandwidth, latency, encryption, firewall, thread, packet, DNS).
-Generate exactly 10 clues that progressively get more obvious. Start abstract, end near-obvious.
-Respond ONLY with valid JSON in this exact format, nothing else:
-{"word":"<the term>","description":"<2 sentence technical explanation>","clues":["clue1","clue2","clue3","clue4","clue5","clue6","clue7","clue8","clue9","clue10"]}`,
+function pickTerm(diff){
+  var terms=TERMS[diff]||TERMS.intermediate;
+  if(usedTerms[diff].length>=terms.length) usedTerms[diff]=[];
+  var available=terms.filter(function(t,i){ return usedTerms[diff].indexOf(i)===-1; });
+  var chosen=available[Math.floor(Math.random()*available.length)];
+  usedTerms[diff].push(terms.indexOf(chosen));
+  return chosen;
+}
 
-  advanced: `You are a clue generator for a tech guessing game at advanced level (senior engineer / CS grad).
-Pick ONE advanced computer science term (e.g. mutex, semaphore, deadlock, memoization, sharding, CAP theorem, bloom filter, B-tree, homomorphic encryption, CRDT, hysteresis, quorum).
-Generate exactly 10 clues that progressively get more obvious. Start very cryptic, end near-obvious.
-Respond ONLY with valid JSON in this exact format, nothing else:
-{"word":"<the term>","description":"<2 sentence expert-level explanation>","clues":["clue1","clue2","clue3","clue4","clue5","clue6","clue7","clue8","clue9","clue10"]}`
-};
-
-// ════════════════════════════════════════════════════════
+// ══════════════════════════════════════════
 //  SCREENS
-// ════════════════════════════════════════════════════════
-function showScreen(id) {
-  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-  document.getElementById("screen-" + id).classList.add("active");
+// ══════════════════════════════════════════
+function showScreen(id){
+  document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("active"); });
+  document.getElementById("screen-"+id).classList.add("active");
 }
 
-// ════════════════════════════════════════════════════════
-//  DIFFICULTY SELECT
-// ════════════════════════════════════════════════════════
-window.selectDiff = function(btn) {
-  document.querySelectorAll(".diff-btn").forEach(b => b.classList.remove("selected"));
+// ══════════════════════════════════════════
+//  DIFFICULTY BUTTONS
+// ══════════════════════════════════════════
+document.getElementById("diff-grid").addEventListener("click", function(e){
+  var btn=e.target.closest(".diff-btn");
+  if(!btn) return;
+  document.querySelectorAll(".diff-btn").forEach(function(b){ b.classList.remove("selected"); });
   btn.classList.add("selected");
-  difficulty = btn.dataset.diff;
-};
+  difficulty=btn.dataset.diff;
+});
 
-// ════════════════════════════════════════════════════════
-//  ROOM CODE HELPERS
-// ════════════════════════════════════════════════════════
-function genCode() {
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  return Array.from({length: 5}, () => chars[Math.floor(Math.random()*chars.length)]).join("");
-}
-
-window.copyCode = function() {
-  navigator.clipboard.writeText(roomCode).catch(() => {});
-};
-
-// ════════════════════════════════════════════════════════
+// ══════════════════════════════════════════
 //  CREATE ROOM
-// ════════════════════════════════════════════════════════
-window.createRoom = async function() {
-  myName = document.getElementById("player-name").value.trim();
-  if (!myName) { document.getElementById("name-error").textContent = "Please enter your name."; return; }
-  document.getElementById("name-error").textContent = "";
+// ══════════════════════════════════════════
+document.getElementById("btn-create").addEventListener("click", function(){
+  myName=document.getElementById("player-name").value.trim();
+  if(!myName){ document.getElementById("name-error").textContent="Please enter your name."; return; }
+  document.getElementById("name-error").textContent="";
+  myId=genId(); roomCode=genCode(); isHost=true;
+  var players={}; players[myId]={name:myName,score:0};
+  db.ref("rooms/"+roomCode).set({host:myId,difficulty:difficulty,status:"lobby",round:0,players:players})
+    .then(function(){ enterLobby(); });
+});
 
-  roomCode = genCode();
-  isHost   = true;
-
-  const roomData = {
-    host: myId,
-    difficulty,
-    status: "lobby",
-    round: 0,
-    players: { [myId]: { name: myName, score: 0, joined: Date.now() } }
-  };
-
-  await set(ref(db, `rooms/${roomCode}`), roomData);
-  enterLobby();
-};
-
-// ════════════════════════════════════════════════════════
+// ══════════════════════════════════════════
 //  JOIN ROOM
-// ════════════════════════════════════════════════════════
-window.joinRoom = async function() {
-  myName = document.getElementById("player-name").value.trim();
-  if (!myName) { document.getElementById("name-error").textContent = "Please enter your name."; return; }
+// ══════════════════════════════════════════
+document.getElementById("btn-join").addEventListener("click", function(){
+  myName=document.getElementById("player-name").value.trim();
+  if(!myName){ document.getElementById("name-error").textContent="Please enter your name."; return; }
+  var code=document.getElementById("join-code").value.trim().toUpperCase();
+  if(!code){ document.getElementById("join-error").textContent="Enter a room code."; return; }
+  db.ref("rooms/"+code).once("value").then(function(snap){
+    if(!snap.exists()){ document.getElementById("join-error").textContent="Room not found."; return; }
+    var room=snap.val();
+    if(room.status==="finished"){ document.getElementById("join-error").textContent="That game has ended."; return; }
+    myId=genId(); roomCode=code; isHost=false; difficulty=room.difficulty;
+    db.ref("rooms/"+roomCode+"/players/"+myId).set({name:myName,score:0}).then(function(){ enterLobby(); });
+  });
+});
 
-  const code = document.getElementById("join-code").value.trim().toUpperCase();
-  if (!code) { document.getElementById("join-error").textContent = "Enter a room code."; return; }
-
-  const snap = await get(ref(db, `rooms/${code}`));
-  if (!snap.exists()) { document.getElementById("join-error").textContent = "Room not found."; return; }
-
-  const room = snap.val();
-  if (room.status === "finished") { document.getElementById("join-error").textContent = "That game has ended."; return; }
-
-  roomCode = code;
-  isHost   = false;
-  difficulty = room.difficulty;
-
-  await update(ref(db, `rooms/${roomCode}/players/${myId}`), { name: myName, score: 0, joined: Date.now() });
-  enterLobby();
-};
-
-// ════════════════════════════════════════════════════════
+// ══════════════════════════════════════════
 //  LOBBY
-// ════════════════════════════════════════════════════════
-function enterLobby() {
+// ══════════════════════════════════════════
+function enterLobby(){
   showScreen("lobby");
-  document.getElementById("lobby-code").textContent = roomCode;
-
-  const diffLabels = { beginner:"🌱 Beginner", intermediate:"⚡ Intermediate", advanced:"🔥 Advanced" };
-
-  if (isHost) {
-    document.getElementById("host-controls").style.display = "block";
-    document.getElementById("guest-waiting").style.display = "none";
-  } else {
-    document.getElementById("host-controls").style.display = "none";
-    document.getElementById("guest-waiting").style.display = "block";
-  }
-
-  // listen for room changes
-  roomRef = ref(db, `rooms/${roomCode}`);
-  const unsub = onValue(roomRef, snap => {
-    if (!snap.exists()) return;
-    const room = snap.val();
-
-    // update difficulty display
-    document.getElementById("lobby-diff-text").textContent = diffLabels[room.difficulty] || room.difficulty;
-
-    // render players
-    const list = document.getElementById("lobby-players");
-    list.innerHTML = "";
-    const players = room.players || {};
-    Object.entries(players).forEach(([pid, p]) => {
-      const row = document.createElement("div");
-      row.className = "player-row";
-      const isMe = pid === myId;
-      const isH  = pid === room.host;
-      row.innerHTML = `<span>${p.name}${isMe ? " (you)" : ""}</span><span class="badge ${isH ? "host" : ""}">${isH ? "host" : "player"}</span>`;
+  document.getElementById("lobby-code").textContent=roomCode;
+  var labels={beginner:"🌱 Beginner",intermediate:"⚡ Intermediate",advanced:"🔥 Advanced"};
+  document.getElementById("host-controls").style.display=isHost?"block":"none";
+  document.getElementById("guest-waiting").style.display=isHost?"none":"block";
+  if(roomListener) db.ref("rooms/"+roomCode).off("value",roomListener);
+  roomListener=db.ref("rooms/"+roomCode).on("value",function(snap){
+    if(!snap.exists()) return;
+    var room=snap.val();
+    document.getElementById("lobby-diff-text").textContent=labels[room.difficulty]||room.difficulty;
+    var list=document.getElementById("lobby-players"); list.innerHTML="";
+    var players=room.players||{};
+    Object.keys(players).forEach(function(pid){
+      var p=players[pid], row=document.createElement("div");
+      row.className="player-row";
+      row.innerHTML="<span>"+p.name+(pid===myId?" (you)":"")+"</span><span class='badge "+(pid===room.host?"host":"")+"'>"+(pid===room.host?"host":"player")+"</span>";
       list.appendChild(row);
     });
-
-    // if game started, go to game screen
-    if (room.status === "playing" && room.currentRound) {
-      off(roomRef);
+    if(room.status==="playing"&&room.currentRound){
+      db.ref("rooms/"+roomCode).off("value",roomListener);
       enterGame(room);
     }
   });
-  listeners.push({ ref: roomRef, unsub });
 }
 
-// ════════════════════════════════════════════════════════
-//  START GAME (host only)
-// ════════════════════════════════════════════════════════
-window.startGame = async function() {
-  document.getElementById("btn-start").disabled = true;
-  document.getElementById("btn-start").textContent = "Generating clues...";
-  await launchRound(1);
-};
+document.getElementById("lobby-code").addEventListener("click",function(){
+  navigator.clipboard.writeText(roomCode).catch(function(){});
+  alert("Room code copied: "+roomCode);
+});
 
-async function launchRound(roundNum) {
-  const snap = await get(ref(db, `rooms/${roomCode}`));
-  const room = snap.val();
-  const diff = room.difficulty;
-
-  // generate clues via Anthropic
-  let clueData;
-  try {
-    clueData = await generateClues(diff);
-  } catch(e) {
-    alert("Failed to generate clues. Check your Anthropic API key.");
-    document.getElementById("btn-start").disabled = false;
-    document.getElementById("btn-start").textContent = "Start Game";
-    return;
-  }
-
-  const roundData = {
-    round: roundNum,
-    word: clueData.word,
-    description: clueData.description,
-    clues: clueData.clues,
-    guesses: {},
-    solved: false,
-    solvedBy: null
-  };
-
-  await update(ref(db, `rooms/${roomCode}`), {
-    status: "playing",
-    round: roundNum,
-    currentRound: roundData
+// ══════════════════════════════════════════
+//  START GAME (host)
+// ══════════════════════════════════════════
+document.getElementById("btn-start").addEventListener("click",function(){
+  document.getElementById("btn-start").disabled=true;
+  document.getElementById("btn-start").textContent="Loading...";
+  db.ref("rooms/"+roomCode+"/difficulty").once("value").then(function(snap){
+    launchRound(1, snap.val()||difficulty);
   });
+});
+
+function launchRound(roundNum, diff){
+  var term=pickTerm(diff);
+  var rd={round:roundNum,word:term.word,description:term.description,clues:term.clues,solved:false,solvedBy:null};
+  db.ref("rooms/"+roomCode).update({status:"playing",round:roundNum,currentRound:rd});
 }
 
-// ════════════════════════════════════════════════════════
-//  GENERATE CLUES (Anthropic API)
-// ════════════════════════════════════════════════════════
-async function generateClues(diff) {
-  const resp = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": ANTHROPIC_API_KEY,
-      "anthropic-version": "2023-06-01",
-      "anthropic-dangerous-direct-browser-access": "true"
-    },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 1000,
-      system: DIFF_PROMPTS[diff],
-      messages: [{ role: "user", content: "Generate a new tech term and 10 clues now." }]
-    })
-  });
-
-  if (!resp.ok) throw new Error("API error " + resp.status);
-  const data = await resp.json();
-  const raw  = data.content.find(b => b.type === "text")?.text || "";
-  const clean = raw.replace(/```json|```/g, "").trim();
-  return JSON.parse(clean);
-}
-
-// ════════════════════════════════════════════════════════
-//  ENTER GAME SCREEN
-// ════════════════════════════════════════════════════════
-function enterGame(room) {
+// ══════════════════════════════════════════
+//  ENTER GAME
+// ══════════════════════════════════════════
+function enterGame(room){
   showScreen("game");
   resetGameUI();
-
-  const rd = room.currentRound;
-  currentClues = rd.clues;
-  currentWord  = rd.word;
-  currentDesc  = rd.description;
-  clueIndex    = 0;
-  guesses      = 0;
-  gameActive   = true;
-
-  document.getElementById("status-round").textContent  = `Round ${rd.round}`;
-  const diffLabels = { beginner:"🌱 Beginner", intermediate:"⚡ Intermediate", advanced:"🔥 Advanced" };
-  document.getElementById("status-diff").textContent   = diffLabels[room.difficulty] || room.difficulty;
-
-  renderPlayers(room.players);
+  var rd=room.currentRound;
+  currentClues=rd.clues; currentWord=rd.word; currentDesc=rd.description;
+  clueIndex=0; guesses=0; gameActive=true;
+  var labels={beginner:"🌱 Beginner",intermediate:"⚡ Intermediate",advanced:"🔥 Advanced"};
+  document.getElementById("status-round").textContent="Round "+rd.round;
+  document.getElementById("status-diff").textContent=labels[room.difficulty]||room.difficulty;
+  document.getElementById("status-players").textContent=Object.keys(room.players||{}).length+" players";
   updateDots();
-
-  document.getElementById("clue-text").textContent = currentClues[0];
-  document.getElementById("guess-input").disabled  = false;
-  document.getElementById("submit-btn").disabled   = false;
+  document.getElementById("clue-text").textContent=currentClues[0];
+  document.getElementById("guess-input").disabled=false;
+  document.getElementById("submit-btn").disabled=false;
   document.getElementById("guess-input").focus();
-
-  // listen for room updates (another player solves it)
-  roundRef = ref(db, `rooms/${roomCode}`);
-  const unsub = onValue(roundRef, snap => {
-    if (!snap.exists()) return;
-    const r = snap.val();
-    if (r.currentRound?.solved && r.currentRound.solvedBy !== myId) {
-      // someone else solved it
-      gameActive = false;
-      document.getElementById("guess-input").disabled = true;
-      document.getElementById("submit-btn").disabled  = true;
-      const solver = r.players?.[r.currentRound.solvedBy]?.name || "Someone";
-      showBanner("failure", `${solver} got it first!`, `The answer was: ${r.currentRound.word}`);
-      showAnswerReveal(r.currentRound.word, r.currentRound.description, r.currentRound.clues);
+  var savedRound=rd.round;
+  if(roomListener) db.ref("rooms/"+roomCode).off("value",roomListener);
+  roomListener=db.ref("rooms/"+roomCode).on("value",function(snap){
+    if(!snap.exists()) return;
+    var r=snap.val();
+    if(r.currentRound&&r.currentRound.solved&&r.currentRound.solvedBy!==myId&&gameActive){
+      gameActive=false;
+      document.getElementById("guess-input").disabled=true;
+      document.getElementById("submit-btn").disabled=true;
+      var solver=(r.players&&r.players[r.currentRound.solvedBy])?r.players[r.currentRound.solvedBy].name:"Someone";
+      showBanner("failure",solver+" got it first!","The answer was: "+r.currentRound.word);
+      showAnswerReveal(r.currentRound.word,r.currentRound.description,r.currentRound.clues);
       renderScores(r.players);
-      if (isHost) document.getElementById("btn-new-round").style.display = "block";
+      if(isHost) document.getElementById("btn-new-round").style.display="block";
     }
-    // host advanced round
-    if (r.status === "playing" && r.currentRound?.round > (room.currentRound?.round || 0)) {
-      off(roundRef);
+    if(r.status==="playing"&&r.currentRound&&r.round>savedRound){
+      db.ref("rooms/"+roomCode).off("value",roomListener);
       enterGame(r);
     }
   });
-  listeners.push({ ref: roundRef, unsub });
 }
 
-// ════════════════════════════════════════════════════════
+// ══════════════════════════════════════════
 //  SUBMIT GUESS
-// ════════════════════════════════════════════════════════
-window.submitGuess = async function() {
-  if (!gameActive) return;
-  const input = document.getElementById("guess-input");
-  const guess = input.value.trim().toLowerCase();
-  if (!guess) return;
-  input.value = "";
-  guesses++;
-  updateDots();
+// ══════════════════════════════════════════
+document.getElementById("submit-btn").addEventListener("click", submitGuess);
+document.getElementById("guess-input").addEventListener("keydown",function(e){ if(e.key==="Enter") submitGuess(); });
 
-  if (guess === currentWord.toLowerCase()) {
-    gameActive = false;
-    document.getElementById("guess-input").disabled = true;
-    document.getElementById("submit-btn").disabled  = true;
-
-    const pts = Math.max(10 - guesses + 1, 1);
-    myScore  += pts;
-
-    // write to firebase
-    await update(ref(db, `rooms/${roomCode}/players/${myId}`), { score: myScore });
-    await update(ref(db, `rooms/${roomCode}/currentRound`), {
-      solved: true,
-      solvedBy: myId
-    });
-
-    showBanner("success", `Correct! +${pts} points`, `Solved in ${guesses} ${guesses===1?"try":"tries"}`);
-    showAnswerReveal(currentWord, currentDesc, currentClues);
+function submitGuess(){
+  if(!gameActive) return;
+  var input=document.getElementById("guess-input");
+  var guess=input.value.trim().toLowerCase();
+  if(!guess) return;
+  input.value=""; guesses++; updateDots();
+  if(guess===currentWord.toLowerCase()){
+    gameActive=false;
+    document.getElementById("guess-input").disabled=true;
+    document.getElementById("submit-btn").disabled=true;
+    var pts=Math.max(11-guesses,1); myScore+=pts;
+    db.ref("rooms/"+roomCode+"/players/"+myId+"/score").set(myScore);
+    db.ref("rooms/"+roomCode+"/currentRound").update({solved:true,solvedBy:myId});
+    showBanner("success","Correct! +"+pts+" points","Solved in "+guesses+(guesses===1?" try":" tries"));
+    showAnswerReveal(currentWord,currentDesc,currentClues);
     renderScores(null);
-    if (isHost) document.getElementById("btn-new-round").style.display = "block";
+    if(isHost) document.getElementById("btn-new-round").style.display="block";
     return;
   }
-
-  addHintRow(`"${guess}" — not quite.`, "wrong");
-
-  if (guesses >= 10) {
-    gameActive = false;
-    document.getElementById("guess-input").disabled = true;
-    document.getElementById("submit-btn").disabled  = true;
-    showBanner("failure", "Out of tries!", `The answer was: ${currentWord}`);
-    showAnswerReveal(currentWord, currentDesc, currentClues);
+  addHintRow('"'+guess+'" — not quite.',"wrong");
+  if(guesses>=10){
+    gameActive=false;
+    document.getElementById("guess-input").disabled=true;
+    document.getElementById("submit-btn").disabled=true;
+    showBanner("failure","Out of tries!","The answer was: "+currentWord);
+    showAnswerReveal(currentWord,currentDesc,currentClues);
     renderScores(null);
-    if (isHost) document.getElementById("btn-new-round").style.display = "block";
+    if(isHost) document.getElementById("btn-new-round").style.display="block";
     return;
   }
-
   clueIndex++;
-  if (clueIndex < currentClues.length) {
-    const c = currentClues[clueIndex];
-    document.getElementById("clue-text").textContent = c;
-    addHintRow(`Clue ${clueIndex+1}: ${c}`, "clue");
+  if(clueIndex<currentClues.length){
+    var c=currentClues[clueIndex];
+    document.getElementById("clue-text").textContent=c;
+    addHintRow("Clue "+(clueIndex+1)+": "+c,"clue");
   }
-};
+}
 
-document.getElementById("guess-input").addEventListener("keydown", e => {
-  if (e.key === "Enter") window.submitGuess();
+// ══════════════════════════════════════════
+//  NEXT ROUND
+// ══════════════════════════════════════════
+document.getElementById("btn-new-round").addEventListener("click",function(){
+  if(!isHost) return;
+  document.getElementById("btn-new-round").style.display="none";
+  db.ref("rooms/"+roomCode+"/round").once("value").then(function(snap){
+    db.ref("rooms/"+roomCode+"/difficulty").once("value").then(function(ds){
+      launchRound((snap.val()||0)+1, ds.val()||difficulty);
+    });
+  });
 });
 
-// ════════════════════════════════════════════════════════
-//  NEXT ROUND (host)
-// ════════════════════════════════════════════════════════
-window.startNewGame = async function() {
-  if (!isHost) return;
-  document.getElementById("btn-new-round").style.display = "none";
-  document.getElementById("btn-new-round").textContent = "Generating next round...";
-  document.getElementById("btn-new-round").disabled = true;
-
-  const snap = await get(ref(db, `rooms/${roomCode}/round`));
-  const nextRound = (snap.val() || 0) + 1;
-  await launchRound(nextRound);
-
-  document.getElementById("btn-new-round").textContent = "Next Round ↻";
-  document.getElementById("btn-new-round").disabled = false;
-};
-
-// ════════════════════════════════════════════════════════
+// ══════════════════════════════════════════
 //  UI HELPERS
-// ════════════════════════════════════════════════════════
-function resetGameUI() {
-  document.getElementById("hints-list").innerHTML    = "";
-  document.getElementById("result-banner").style.display  = "none";
-  document.getElementById("answer-reveal").style.display  = "none";
-  document.getElementById("scoreboard-wrap").style.display = "none";
-  document.getElementById("btn-new-round").style.display   = "none";
-  document.getElementById("guess-input").value = "";
-  document.getElementById("clue-text").innerHTML = '<span class="spinner"></span> Generating clue...';
+// ══════════════════════════════════════════
+function resetGameUI(){
+  document.getElementById("hints-list").innerHTML="";
+  document.getElementById("result-banner").style.display="none";
+  document.getElementById("answer-reveal").style.display="none";
+  document.getElementById("scoreboard-wrap").style.display="none";
+  document.getElementById("btn-new-round").style.display="none";
+  document.getElementById("guess-input").value="";
+  document.getElementById("btn-start").disabled=false;
+  document.getElementById("btn-start").textContent="Start Game";
+  document.getElementById("clue-text").textContent="Loading...";
 }
 
-function updateDots() {
-  const c = document.getElementById("tries-dots");
-  c.innerHTML = "";
-  for (let i=0; i<10; i++) {
-    const d = document.createElement("div");
-    d.className = "dot" + (i < guesses ? " used" : "");
+function updateDots(){
+  var c=document.getElementById("tries-dots"); c.innerHTML="";
+  for(var i=0;i<10;i++){
+    var d=document.createElement("div");
+    d.className="dot"+(i<guesses?" used":"");
     c.appendChild(d);
   }
-  document.getElementById("tries-label").textContent = guesses + " / 10 tries";
+  document.getElementById("tries-label").textContent=guesses+" / 10 tries";
 }
 
-function showBanner(type, title, sub) {
-  const b = document.getElementById("result-banner");
-  b.className = "banner " + type;
-  b.style.display = "block";
-  document.getElementById("banner-title").textContent = title;
-  document.getElementById("banner-sub").textContent   = sub;
+function showBanner(type,title,sub){
+  var b=document.getElementById("result-banner");
+  b.className="banner "+type; b.style.display="block";
+  document.getElementById("banner-title").textContent=title;
+  document.getElementById("banner-sub").textContent=sub;
 }
 
-function showAnswerReveal(word, desc, clues) {
-  document.getElementById("answer-word").textContent = word;
-  document.getElementById("answer-desc").textContent = desc;
-  const cc = document.getElementById("all-clues");
-  cc.innerHTML = "";
-  clues.forEach((clue, i) => {
-    const row = document.createElement("div");
-    row.className = "clue-row";
-    row.innerHTML = `<span class="clue-num">${i+1}</span><span>${clue}</span>`;
+function showAnswerReveal(word,desc,clues){
+  document.getElementById("answer-word").textContent=word;
+  document.getElementById("answer-desc").textContent=desc;
+  var cc=document.getElementById("all-clues"); cc.innerHTML="";
+  clues.forEach(function(clue,i){
+    var row=document.createElement("div"); row.className="clue-row";
+    row.innerHTML="<span class='clue-num'>"+(i+1)+"</span><span>"+clue+"</span>";
     cc.appendChild(row);
   });
-  document.getElementById("answer-reveal").style.display = "block";
+  document.getElementById("answer-reveal").style.display="block";
 }
 
-async function renderScores(playersOverride) {
-  let players = playersOverride;
-  if (!players) {
-    const snap = await get(ref(db, `rooms/${roomCode}/players`));
-    players = snap.val() || {};
-  }
-  const sorted = Object.entries(players).sort((a,b) => (b[1].score||0) - (a[1].score||0));
-  const sb = document.getElementById("scoreboard");
-  sb.innerHTML = "";
-  sorted.forEach(([pid, p], idx) => {
-    const row = document.createElement("div");
-    row.className = "score-row" + (idx===0 ? " winner" : "");
-    row.innerHTML = `<span>${idx===0?"🏆 ":""}${p.name}${pid===myId?" (you)":""}</span><span class="pts">${p.score||0} pts</span>`;
-    sb.appendChild(row);
-  });
-  document.getElementById("scoreboard-wrap").style.display = "block";
+function renderScores(playersOverride){
+  var doRender=function(players){
+    var sorted=Object.keys(players).map(function(pid){ return [pid,players[pid]]; });
+    sorted.sort(function(a,b){ return (b[1].score||0)-(a[1].score||0); });
+    var sb=document.getElementById("scoreboard"); sb.innerHTML="";
+    sorted.forEach(function(entry,idx){
+      var pid=entry[0],p=entry[1],row=document.createElement("div");
+      row.className="score-row"+(idx===0?" winner":"");
+      row.innerHTML="<span>"+(idx===0?"🏆 ":"")+p.name+(pid===myId?" (you)":"")+"</span><span class='pts'>"+(p.score||0)+" pts</span>";
+      sb.appendChild(row);
+    });
+    document.getElementById("scoreboard-wrap").style.display="block";
+  };
+  if(playersOverride){ doRender(playersOverride); return; }
+  db.ref("rooms/"+roomCode+"/players").once("value").then(function(snap){ doRender(snap.val()||{}); });
 }
 
-function renderPlayers(players) {
-  const count = Object.keys(players||{}).length;
-  document.getElementById("status-players").textContent = `${count} player${count!==1?"s":""}`;
-}
-
-function addHintRow(text, type) {
-  const el = document.createElement("div");
-  el.className = "hint-row " + type;
-  el.textContent = text;
-  const list = document.getElementById("hints-list");
-  list.insertBefore(el, list.firstChild);
+function addHintRow(text,type){
+  var el=document.createElement("div"); el.className="hint-row "+type; el.textContent=text;
+  var list=document.getElementById("hints-list"); list.insertBefore(el,list.firstChild);
 }
 </script>
 </body>
